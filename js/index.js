@@ -6,52 +6,54 @@ const playerImg = new Image();
 bcgImg.src = "/images/road.png";
 playerImg.src = "/images/car.png";
 
-playerX = 135;
-playerY = 350;
-playerWidth = 39;
-playerHeigth = 75;
-playerSpeed = 3;
+playerX = 210;
+playerY = 500;
+playerWidth = 50;
+playerHeigth = 80;
+playerSpeed = 5;
 
-class Player {
-  constructor(x, y, width, heigth, speed, image) {
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.heigth = heigth;
-    this.speed = speed;
-    this.image = image;
-  }
+obstacleSpeed = 1.5;
 
-  update() {
-    ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
-  }
+// class Player {
+//   constructor(x, y, width, heigth, speed, image) {
+//     this.x = x;
+//     this.y = y;
+//     this.width = width;
+//     this.heigth = heigth;
+//     this.speed = speed;
+//     this.image = image;
+//   }
 
-  newPos() {
-    this.x += this.speed;
-  }
+//   update() {
+//     ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+//   }
 
-  left() {
-    return this.x;
-  }
-  right() {
-    return this.x + this.width;
-  }
-  top() {
-    return this.y;
-  }
-  bottom() {
-    return this.y + this.height;
-  }
+//   newPos() {
+//     this.x += this.speed;
+//   }
 
-  crashWith(obstacle) {
-    return !(
-      this.bottom() < obstacle.top() ||
-      this.top() > obstacle.bottom() ||
-      this.right() < obstacle.left() ||
-      this.left() > obstacle.right()
-    );
-  }
-}
+//   left() {
+//     return this.x;
+//   }
+//   right() {
+//     return this.x + this.width;
+//   }
+//   top() {
+//     return this.y;
+//   }
+//   bottom() {
+//     return this.y + this.height;
+//   }
+
+//   crashWith(obstacle) {
+//     return !(
+//       this.bottom() < obstacle.top() ||
+//       this.top() > obstacle.bottom() ||
+//       this.right() < obstacle.left() ||
+//       this.left() > obstacle.right()
+//     );
+//   }
+// }
 
 class Component {
   constructor(x, y, width, height, color) {
@@ -128,7 +130,7 @@ class Game {
 
   updateObstacles = () => {
     for (let i = 0; i < this.obstacles.length; i++) {
-      this.obstacles[i].y += 1;
+      this.obstacles[i].y += obstacleSpeed;
       this.obstacles[i].update();
     }
 
@@ -175,12 +177,12 @@ class Game {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.fillStyle = "red";
-    ctx.font = "70px Verdana";
-    ctx.fillText(`GAME OVER`, 200, 230);
+    ctx.font = "50px Verdana";
+    ctx.fillText(`GAME OVER`, 100, 230);
 
     ctx.fillStyle = "white";
     ctx.font = "40px Verdana";
-    ctx.fillText(`Final Score: ${this.score}`, 280, 290);
+    ctx.fillText(`Final Score: ${this.score}`, 100, 290);
   }
 }
 
@@ -190,14 +192,12 @@ window.onload = () => {
   };
 
   function startGame() {
-    // const player = new Component(0, 110, 30, 30, "red");
-    const player = new Player(
+    const player = new Component(
       playerX,
       playerY,
       playerWidth,
       playerHeigth,
-      playerSpeed,
-      playerImg
+      "blue"
     );
     const game = new Game(player);
 
@@ -206,9 +206,9 @@ window.onload = () => {
     document.addEventListener("keydown", (event) => {
       switch (event.code) {
         case "ArrowRight":
-          return (game.player.speedX += 2);
+          return (game.player.speedX = playerSpeed);
         case "ArrowLeft":
-          return (game.player.speedX -= 2);
+          return (game.player.speedX = -playerSpeed);
       }
     });
 
